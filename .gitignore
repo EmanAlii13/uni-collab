@@ -2,5 +2,5 @@ __pycache__/
 *.pyc
 .venv/
 venv/
-app/data/projects.json
+project-service/app/data/projects.json
 
