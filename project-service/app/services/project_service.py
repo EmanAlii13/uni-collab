@@ -1,37 +1,59 @@
-from app.db import projects_collection
+import json
+import os
+import uuid
 
-def create_project(title, description, leader_id):
+PROJECTS_FILE = "app/data/projects.json"
+
+
+def load_projects():
+    if not os.path.exists(PROJECTS_FILE):
+        return []
+    with open(PROJECTS_FILE, "r") as f:
+        return json.load(f)
+
+
+def save_projects(projects):
+    with open(PROJECTS_FILE, "w") as f:
+        json.dump(projects, f, indent=2)
+
+
+def create_project(title, desc, leader):
+    projects = load_projects()
     project = {
+        "_id": str(uuid.uuid4()),
         "title": title,
-        "description": description,
-        "leader_id": leader_id,
-        "team_ids": [leader_id],
-        "join_requests": []
+        "desc": desc,
+        "leader": leader,
+        "members": [leader],  # Leader becomes a member automatically
+        "requests": [],
     }
-
-    projects_collection.insert_one(project)
+    projects.append(project)
+    save_projects(projects)
+    print("Project created successfully")
+    print(project["_id"])
     return project
 
 
-def request_join(project, user_id):
-    if user_id in project["team_ids"]:
-        return "Already in team"
+def join_project(project_id, user_id):
+    projects = load_projects()
+    for project in projects:
+        if project["_id"] == project_id:
+            if user_id in project["members"] or user_id in project["requests"]:
+                return False, "Already joined or requested"
+            project["requests"].append(user_id)
+            save_projects(projects)
+            return True, "Request sent"
+    return False, "Project not found"
 
-    if len(project["team_ids"]) >= 3:
-        return "Team is full"
 
-    project["join_requests"].append(user_id)
-    return "Request sent"
-
-def approve_request(project, user_id):
-    if user_id in project["join_requests"]:
-        project["join_requests"].remove(user_id)
-        project["team_ids"].append(user_id)
-        return "Approved"
-    return "No such request"
-
-def reject_request(project, user_id):
-    if user_id in project["join_requests"]:
-        project["join_requests"].remove(user_id)
-        return "Rejected"
-    return "No such request"
+def approve_request(project_id, user_id):
+    projects = load_projects()
+    for project in projects:
+        if project["_id"] == project_id:
+            if user_id in project["requests"]:
+                project["requests"].remove(user_id)
+                project["members"].append(user_id)
+                save_projects(projects)
+                return True, "Approved"
+            return False, "Request not found"
+    return False, "Project not found"
