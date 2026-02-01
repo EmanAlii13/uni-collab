@@ -1,0 +1,40 @@
+{
+  "projects": {
+    "1": {
+      "title": "AI Project",
+      "desc": "ML System",
+      "leader": "ayat",
+      "members": []
+    },
+    "2": {
+      "title": "AI Project",
+      "desc": "ML System",
+      "leader": "ayat",
+      "members": []
+    },
+    "3": {
+      "title": "AI Project",
+      "desc": "ML System",
+      "leader": "ayat",
+      "members": []
+    },
+    "4": {
+      "title": "AI Project",
+      "desc": "ML System",
+      "leader": "ayat",
+      "members": []
+    },
+    "5": {
+      "title": "AI Project",
+      "desc": "ML System",
+      "leader": "ayat",
+      "members": []
+    },
+    "6": {
+      "title": "AI Project",
+      "desc": "ML System",
+      "leader": "ayat",
+      "members": []
+    }
+  }
+}

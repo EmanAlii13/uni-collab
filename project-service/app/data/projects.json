@@ -1,0 +1,90 @@
+[
+  {
+    "_id": "1bbbef03-89f9-4eaf-af76-77c99d00ed22",
+    "title": "AI Project",
+    "desc": "ML System",
+    "leader": "ayat",
+    "members": [
+      "ayat",
+      "lama"
+    ],
+    "join_requests": []
+  },
+  {
+    "_id": "3876a77e-38a2-46ab-a0ed-7567beb5f615",
+    "title": "Test Project",
+    "desc": "Description",
+    "leader": "leader1",
+    "members": [
+      "leader1"
+    ],
+    "join_requests": []
+  },
+  {
+    "_id": "186f9b73-20e7-415a-ae72-248feb02a25e",
+    "title": "Join Test",
+    "desc": "Desc",
+    "leader": "leader2",
+    "members": [
+      "leader2"
+    ],
+    "join_requests": [
+      "user1"
+    ]
+  },
+  {
+    "_id": "4911be3c-3a56-4038-abd8-b04ad460dcfc",
+    "title": "Approve Test",
+    "desc": "Desc",
+    "leader": "leader3",
+    "members": [
+      "leader3",
+      "user2"
+    ],
+    "join_requests": []
+  },
+  {
+    "_id": "743eef11-edb8-4c32-b31b-53b04601de01",
+    "title": "AI Project",
+    "desc": "ML System",
+    "leader": "ayat",
+    "members": [
+      "ayat",
+      "lama"
+    ],
+    "join_requests": []
+  },
+  {
+    "_id": "65189553-b94b-4cb0-ab47-3729aacf5898",
+    "title": "Test Project",
+    "desc": "Description",
+    "leader": "leader1",
+    "members": [
+      "leader1"
+    ],
+    "join_requests": []
+  },
+  {
+    "_id": "3d7282c0-60a8-42b3-a41b-52310c61b351",
+    "title": "Join Test",
+    "desc": "Desc",
+    "leader": "leader2",
+    "members": [
+      "leader2"
+    ],
+    "join_requests": [
+      "user1"
+    ]
+  },
+  {
+    "_id": "4c7096a9-b2a7-42bf-aee6-786472768225",
+    "title": "Approve Test",
+    "desc": "Desc",
+    "leader": "leader3",
+    "members": [
+      "leader3",
+      "user2"
+    ],
+    "join_requests": []
+  }
+]

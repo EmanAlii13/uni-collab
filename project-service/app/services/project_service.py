@@ -1,59 +1,48 @@
-import json
 import os
-import uuid
 
-PROJECTS_FILE = "app/data/projects.json"
+class ProjectService:
+    def __init__(self, storage=None):
+        """
+        storage: إما مسار ملف (str/Path) أو كائن storage يدعم load() و save()
+        """
+        if storage is None:
+            from .storage import JSONStorage
+            storage_path = os.path.join(os.path.dirname(__file__), "../data.json")
+            self.storage = JSONStorage(storage_path)
+        elif isinstance(storage, str) or isinstance(storage, os.PathLike):
+            from .storage import JSONStorage
+            self.storage = JSONStorage(storage)
+        else:
+            # نفترض أنه كائن storage جاهز
+            self.storage = storage
 
+        # تحميل البيانات
+        try:
+            self.data = self.storage.load()
+        except FileNotFoundError:
+            self.data = {"projects": {}}
 
-def load_projects():
-    if not os.path.exists(PROJECTS_FILE):
-        return []
-    with open(PROJECTS_FILE, "r") as f:
-        return json.load(f)
+        # التأكد من وجود projects
+        if "projects" not in self.data or not isinstance(self.data["projects"], dict):
+            self.data["projects"] = {}
 
+    def save_data(self):
+        self.storage.save(self.data)
 
-def save_projects(projects):
-    with open(PROJECTS_FILE, "w") as f:
-        json.dump(projects, f, indent=2)
+    def create_project(self, title, desc, leader):
+        project_id = str(len(self.data["projects"]) + 1)
+        self.data["projects"][project_id] = {
+            "title": title,
+            "desc": desc,
+            "leader": leader,
+            "members": []
+        }
+        self.save_data()
+        return project_id
 
-
-def create_project(title, desc, leader):
-    projects = load_projects()
-    project = {
-        "_id": str(uuid.uuid4()),
-        "title": title,
-        "desc": desc,
-        "leader": leader,
-        "members": [leader],  # Leader becomes a member automatically
-        "requests": [],
-    }
-    projects.append(project)
-    save_projects(projects)
-    print("Project created successfully")
-    print(project["_id"])
-    return project
-
-
-def join_project(project_id, user_id):
-    projects = load_projects()
-    for project in projects:
-        if project["_id"] == project_id:
-            if user_id in project["members"] or user_id in project["requests"]:
-                return False, "Already joined or requested"
-            project["requests"].append(user_id)
-            save_projects(projects)
-            return True, "Request sent"
-    return False, "Project not found"
-
-
-def approve_request(project_id, user_id):
-    projects = load_projects()
-    for project in projects:
-        if project["_id"] == project_id:
-            if user_id in project["requests"]:
-                project["requests"].remove(user_id)
-                project["members"].append(user_id)
-                save_projects(projects)
-                return True, "Approved"
-            return False, "Request not found"
-    return False, "Project not found"
+    def join_project(self, project_id, member):
+        if project_id in self.data["projects"]:
+            self.data["projects"][project_id]["members"].append(member)
+            self.save_data()
+            return True
+        return False
